@@ -26,10 +26,27 @@ class Coffee {
  * 역할 : 주문 담당
  */
 class Kiosk {
+
+    private PosSystem posSystem;
+
+    public Kiosk(PosSystem posSystem) {
+        this.posSystem = posSystem;
+    }
+
+    public void startOrderProcess() {
+        // 1. 주문을 직접 받는다.
+        Order order = takeOrder();
+        // 2. 결제 PG사 한테 위임한다. -> 너가 대신 결제
+        posSystem.processPayment(order);
+    }
+
     public Order takeOrder() {
         System.out.println("손님, 아메리카노 주문을 받았습니다.");
         return  new Order("아메리카노");
     }
+
+
+
 }
 
 /**
@@ -57,9 +74,10 @@ class PosSystem {
 public class CafeSimulation {
 
     public static void main(String[] args) {
-        Kiosk kiosk = new Kiosk();
+
         Barista barista = new Barista();
         PosSystem posSystem = new PosSystem();
+        Kiosk kiosk = new Kiosk(posSystem);
 
         System.out.println("커피숍 영업 시작 ");
 
